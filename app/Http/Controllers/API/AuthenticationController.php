@@ -24,6 +24,7 @@ class AuthenticationController extends Controller
             $errors = $validator->errors();
             $response = [
                 'message' => 'Validation error',
+                'status' => 'ERROR',
                 'errors' => $errors->all()
             ];
 
@@ -40,7 +41,10 @@ class AuthenticationController extends Controller
 
         $response = [
             'message' => 'Successfully added new user',
-            'user' => $user,
+            'status' => 'SUCCESS',
+            'data' => [
+                'user' => $user,
+            ]
             //'token' => $token
         ];
 
@@ -52,7 +56,8 @@ class AuthenticationController extends Controller
         auth()->user()->tokens()->delete();
 
         $response = [
-            'message' => 'logged out'
+            'message' => 'logged out',
+            'status' => 'SUCCESS'
         ];
 
         return response()->json($response, 200);
@@ -71,6 +76,7 @@ class AuthenticationController extends Controller
             $errors = $validator->errors();
             $response = [
                 'message' => 'Validation error',
+                'status' => 'ERROR',
                 'errors' => $errors->all()
             ];
 
@@ -82,16 +88,20 @@ class AuthenticationController extends Controller
         if (is_null($user) || !Hash::check($request->password, $user->password))
         {
             return response()->json([
-                'message' => 'Wrong credentials'
+                'message' => 'Wrong credentials',
+                'status' => 'ERROR',
             ], 401);
         }
 
-        $token = $user->createToken('equilibtoken')->plainTextToken;
+        $token = $user->createToken('diglibapitokenkey')->plainTextToken;
 
         $response = [
             'message' => 'Successfully logged in',
-            'user' => $user,
-            'token' => $token
+            'status' => 'SUCCESS',
+            'data' => [
+                'user' => $user,
+                'token' => $token
+            ]
         ];
 
         return response()->json($response, 200);
