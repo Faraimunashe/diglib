@@ -35,7 +35,7 @@ class SourceController extends Controller
                 'archive_id' => ['required', 'integer'],
                 'title' => ['required', 'string'],
                 'source_type' => ['required', 'string'],
-                'file' => ['required_unless:source_type,website', 'file', 'mimes:jpeg,png,pdf,txt,docx,csv,xlx,xlxs', 'max:2048'],
+                'file' => ['required_unless:source_type,website', 'file', 'mimes:jpeg,png,pdf,txt,docx,csv,xlx,xlxs,mp3,mp4,mov,avi', 'max:10048'],
                 'url' => ['required_if:source_type,website']
             ]);
 
